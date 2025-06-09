@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection.Metadata;
 using Microsoft.Xna.Framework.Input;
 
 namespace MonoGame.Community.Toolkit.Input;
@@ -43,6 +44,78 @@ public readonly struct KeyboardStateEx : IEquatable<KeyboardStateEx>
     /// <see langword="true"/> if Num Lock is active; otherwise, <see langword="false"/>.
     /// </value>
     public readonly bool NumLock => CurrentState.NumLock;
+
+    /// <summary>
+    /// Gets a value indicating whether the left Shift key is currently being pressed.
+    /// </summary>
+    /// <value>
+    /// <see langword="true"/> if the left Shift key is currently down; otherwise, <see langword="false"/>.
+    /// </value>
+    public readonly bool LeftShift => CurrentState.IsKeyDown(Keys.LeftShift);
+
+    /// <summary>
+    /// Gets a value indicating whether the right Shift key is currently being pressed.
+    /// </summary>
+    /// <value>
+    /// <see langword="true"/> if the right Shift key is currently down; otherwise, <see langword="false"/>.
+    /// </value>
+    public readonly bool RightShift => CurrentState.IsKeyDown(Keys.RightShift);
+
+    /// <summary>
+    /// Gets a value indicating whether either Shift key is currently being pressed.
+    /// </summary>
+    /// <value>
+    /// <see langword="true"/> if either the left or right Shift key is currently down; otherwise, <see langword="false"/>.
+    /// </value>
+    public readonly bool Shift => LeftShift || RightShift;
+
+    /// <summary>
+    /// Gets a value indicating whether the left Alt key is currently being pressed.
+    /// </summary>
+    /// <value>
+    /// <see langword="true"/> if the left Alt key is currently down; otherwise, <see langword="false"/>.
+    /// </value>
+    public readonly bool LeftAlt => CurrentState.IsKeyDown(Keys.LeftAlt);
+
+    /// <summary>
+    /// Gets a value indicating whether the right Alt key is currently being pressed.
+    /// </summary>
+    /// <value>
+    /// <see langword="true"/> if the right Alt key is currently down; otherwise, <see langword="false"/>.
+    /// </value>
+    public readonly bool RightAlt => CurrentState.IsKeyDown(Keys.RightAlt);
+
+    /// <summary>
+    /// Gets a value indicating whether either Alt key is currently being pressed.
+    /// </summary>
+    /// <value>
+    /// <see langword="true"/> if either the left or right Alt key is currently down; otherwise, <see langword="false"/>.
+    /// </value>
+    public readonly bool Alt => LeftAlt || RightAlt;
+
+    /// <summary>
+    /// Gets a value indicating whether the left Control key is currently being pressed.
+    /// </summary>
+    /// <value>
+    /// <see langword="true"/> if the left Control key is currently down; otherwise, <see langword="false"/>.
+    /// </value>
+    public readonly bool LeftControl => CurrentState.IsKeyDown(Keys.LeftControl);
+
+    /// <summary>
+    /// Gets a value indicating whether the right Control key is currently being pressed.
+    /// </summary>
+    /// <value>
+    /// <see langword="true"/> if the right Control key is currently down; otherwise, <see langword="false"/>.
+    /// </value>
+    public readonly bool RightControl => CurrentState.IsKeyDown(Keys.RightControl);
+
+    /// <summary>
+    /// Gets a value indicating whether either Control key is currently being pressed.
+    /// </summary>
+    /// <value>
+    /// <see langword="true"/> if either the left or right Control key is currently down; otherwise, <see langword="false"/>.
+    /// </value>
+    public readonly bool Control => LeftControl || RightControl;
 
     /// <summary>
     /// Gets the extended state information for the specified key.
@@ -172,6 +245,26 @@ public readonly struct KeyboardStateEx : IEquatable<KeyboardStateEx>
     /// keys.
     /// </remarks>
     public readonly void GetPressedKeys(Keys[] keys) => CurrentState.GetPressedKeys(keys);
+
+    /// <summary>
+    /// Determines the directional input from keyboard keys, return -1, 0, or 1;
+    /// </summary>
+    /// <param name="negative">The key representing negative direction.</param>
+    /// <param name="positive">The key representing positive direction.</param>
+    /// <param name="bothValue">The value to return when both keys are pressed. Default is 0.</param>
+    /// <returns>
+    /// -1 if only the negative key is pressed, 1 if only the positive key is pressed, <paramref name="bothValue"/> if
+    /// both are pressed, or 0 if neither is pressed.
+    // </returns>
+    public readonly int GetAxis(Keys negative, Keys positive, int bothValue = 0)
+    {
+        bool negativeDown = IsKeyDown(negative);
+        bool positiveDown = IsKeyDown(positive);
+        if (negativeDown && positiveDown) { return bothValue; }
+        if (negativeDown) { return -1; }
+        if (positiveDown) { return 1; }
+        return 0;
+    }
 
     /// <inheritdoc/>
     public override bool Equals([NotNullWhen(true)] object obj) => obj is KeyboardStateEx other && Equals(other);

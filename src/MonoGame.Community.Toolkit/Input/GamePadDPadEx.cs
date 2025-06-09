@@ -23,11 +23,27 @@ public readonly struct GamePadDPadEx : IEquatable<GamePadDPadEx>
     /// <value>
     /// A <see cref="ButtonStateEx"/> value representing the current state of the up direction.
     /// </value>
-    /// <remarks>
-    /// The returned value can contain multiple flags. For example, a direction that was just pressed
-    /// will have both <see cref="ButtonStateEx.Down"/> and <see cref="ButtonStateEx.Pressed"/> flags set.
-    /// </remarks>
-    public readonly ButtonStateEx Up;
+    public readonly ButtonStateEx Up
+    {
+        get
+        {
+            bool current = _current.Up == ButtonState.Pressed;
+            bool previous = _previous.Up == ButtonState.Pressed;
+
+            ButtonStateEx state = current ? ButtonStateEx.Down : ButtonStateEx.Up;
+
+            if (current && !previous)
+            {
+                state |= ButtonStateEx.Pressed;
+            }
+            else if (!current && previous)
+            {
+                state |= ButtonStateEx.Released;
+            }
+
+            return state;
+        }
+    }
 
     /// <summary>
     /// Gets the extended state information for the down direction on the D-pad.
@@ -35,11 +51,27 @@ public readonly struct GamePadDPadEx : IEquatable<GamePadDPadEx>
     /// <value>
     /// A <see cref="ButtonStateEx"/> value representing the current state of the down direction.
     /// </value>
-    /// <remarks>
-    /// The returned value can contain multiple flags. For example, a direction that was just pressed
-    /// will have both <see cref="ButtonStateEx.Down"/> and <see cref="ButtonStateEx.Pressed"/> flags set.
-    /// </remarks>
-    public readonly ButtonStateEx Down;
+    public readonly ButtonStateEx Down
+    {
+        get
+        {
+            bool current = _current.Down == ButtonState.Pressed;
+            bool previous = _previous.Down == ButtonState.Pressed;
+
+            ButtonStateEx state = current ? ButtonStateEx.Down : ButtonStateEx.Up;
+
+            if (current && !previous)
+            {
+                state |= ButtonStateEx.Pressed;
+            }
+            else if (!current && previous)
+            {
+                state |= ButtonStateEx.Released;
+            }
+
+            return state;
+        }
+    }
 
     /// <summary>
     /// Gets the extended state information for the left direction on the D-pad.
@@ -47,11 +79,27 @@ public readonly struct GamePadDPadEx : IEquatable<GamePadDPadEx>
     /// <value>
     /// A <see cref="ButtonStateEx"/> value representing the current state of the left direction.
     /// </value>
-    /// <remarks>
-    /// The returned value can contain multiple flags. For example, a direction that was just pressed
-    /// will have both <see cref="ButtonStateEx.Down"/> and <see cref="ButtonStateEx.Pressed"/> flags set.
-    /// </remarks>
-    public readonly ButtonStateEx Left;
+    public readonly ButtonStateEx Left
+    {
+        get
+        {
+            bool current = _current.Left == ButtonState.Pressed;
+            bool previous = _previous.Left == ButtonState.Pressed;
+
+            ButtonStateEx state = current ? ButtonStateEx.Down : ButtonStateEx.Up;
+
+            if (current && !previous)
+            {
+                state |= ButtonStateEx.Pressed;
+            }
+            else if (!current && previous)
+            {
+                state |= ButtonStateEx.Released;
+            }
+
+            return state;
+        }
+    }
 
     /// <summary>
     /// Gets the extended state information for the right direction on the D-pad.
@@ -59,25 +107,37 @@ public readonly struct GamePadDPadEx : IEquatable<GamePadDPadEx>
     /// <value>
     /// A <see cref="ButtonStateEx"/> value representing the current state of the right direction.
     /// </value>
-    /// <remarks>
-    /// The returned value can contain multiple flags. For example, a direction that was just pressed
-    /// will have both <see cref="ButtonStateEx.Down"/> and <see cref="ButtonStateEx.Pressed"/> flags set.
-    /// </remarks>
-    public readonly ButtonStateEx Right;
+    public readonly ButtonStateEx Right
+    {
+        get
+        {
+            bool current = _current.Right == ButtonState.Pressed;
+            bool previous = _previous.Right == ButtonState.Pressed;
+
+            ButtonStateEx state = current ? ButtonStateEx.Down : ButtonStateEx.Up;
+
+            if (current && !previous)
+            {
+                state |= ButtonStateEx.Pressed;
+            }
+            else if (!current && previous)
+            {
+                state |= ButtonStateEx.Released;
+            }
+
+            return state;
+        }
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GamePadDPadEx"/> structure.
     /// </summary>
-    /// <param name="up">The extended state of the up direction.</param>
-    /// <param name="down">The extended state of the down direction.</param>
-    /// <param name="left">The extended state of the left direction.</param>
-    /// <param name="right">The extended state of the right direction.</param>
-    public GamePadDPadEx(ButtonStateEx up, ButtonStateEx down, ButtonStateEx left, ButtonStateEx right)
+    /// <param name="current">The current frame's dpad state.</param>
+    /// <param name="previous">The previous frame's dpad state.</param>
+    public GamePadDPadEx(GamePadDPad current, GamePadDPad previous)
     {
-        Up = up;
-        Down = down;
-        Left = left;
-        Right = right;
+        _current = current;
+        _previous = previous;
     }
 
     /// <inheritdoc/>
