@@ -184,7 +184,6 @@ public readonly struct GamePadStateEx : IEquatable<GamePadStateEx>
     public readonly bool SetVibration(float leftMotor, float rightMotor) =>
         GamePad.SetVibration(PlayerIndex, leftMotor, rightMotor);
 
-
     /// <summary>
     /// Sets the vibration motor speeds on the gamepad, including trigger motors if supported.
     /// </summary>
@@ -202,7 +201,6 @@ public readonly struct GamePadStateEx : IEquatable<GamePadStateEx>
     /// </remarks>
     public readonly bool SetVibration(float leftMotor, float rightMotor, float leftTrigger, float rightTrigger) =>
         GamePad.SetVibration(PlayerIndex, leftMotor, rightMotor, leftTrigger, rightTrigger);
-
 
     /// <summary>
     /// Stops all vibration on the gamepad by setting all motor speeds to zero.

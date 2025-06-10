@@ -121,7 +121,7 @@ public class KeyboardListener : InputListener
     /// </remarks>
     public override void Update(GameTime gameTime)
     {
-        _state = new KeyboardStateEx(Keyboard.GetState(), _state.CurrentState);
+        _state = KeyboardEx.GetState();
         RaisedPressedEvents(gameTime);
         RaiseReleasedEvents();
 

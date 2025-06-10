@@ -1,10 +1,36 @@
-using System;
 using Microsoft.Xna.Framework.Input;
 
 namespace MonoGame.Community.Toolkit.Input;
 
+/// <summary>
+/// Provides extension methods for the <see cref="Keys"/> enumeration to enhance keyboard input handling.
+/// </summary>
 public static class KeysExtensions
 {
+    /// <summary>
+    /// Converts a <see cref="Keys"/> value to its corresponding character representation, if applicable.
+    /// </summary>
+    /// <param name="key">The key to convert to a character.</param>
+    /// <param name="modifiers">
+    /// The keyboard modifier states to consider when converting the key. Defaults to <see cref="KeyboardModifiers.None"/>.
+    /// </param>
+    /// <returns>
+    /// A <see cref="char"/> value representing the character associated with the key, or <see langword="null"/>
+    /// if the key does not have a printable character representation.
+    /// </returns>
+    /// <remarks>
+    /// This method converts keyboard keys to their corresponding character values, taking into account
+    /// the state of modifier keys. The Shift modifier affects the output for applicable keys:
+    /// <list type="bullet">
+    /// <item><description>Letters (A-Z) are converted to uppercase when Shift is pressed, lowercase otherwise</description></item>
+    /// <item><description>Number keys (0-9) produce their shifted symbols (e.g., Shift+1 = '!') when Shift is pressed</description></item>
+    /// <item><description>Punctuation and symbol keys produce their shifted variants when applicable</description></item>
+    /// <item><description>Numpad keys always produce their numeric values regardless of Shift state</description></item>
+    /// <item><description>Special keys like Space, Tab, Enter, and Backspace produce their corresponding control characters</description></item>
+    /// </list>
+    /// Keys that do not have printable character representations (such as function keys, arrow keys, or modifier keys)
+    /// will return <see langword="null"/>. This method uses US keyboard layout conventions for character mapping.
+    /// </remarks>
     public static char? ToChar(this Keys key, KeyboardModifiers modifiers = KeyboardModifiers.None)
     {
         bool isShiftDown = (modifiers & KeyboardModifiers.Shift) == KeyboardModifiers.Shift;
